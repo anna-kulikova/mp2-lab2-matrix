@@ -95,10 +95,10 @@ TVector<ValType>::~TVector()
 template <class ValType> // доступ
 ValType& TVector<ValType>::operator[](int pos)
 {
-	if ((pos < 0) || (pos >(Size - 1)))
+	if ((pos < 0) || (pos >(Size + StartIndex - 1)))
 		throw
 		exception("Error");
-	return pVector[pos];
+	return pVector[pos - StartIndex];
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // сравнение на равенство
