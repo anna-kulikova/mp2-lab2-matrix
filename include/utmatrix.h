@@ -307,7 +307,7 @@ TMatrix<ValType>& TMatrix<ValType>::operator=(const TMatrix<ValType> &mt)
 		delete[]pVector;
 		Size = mt.Size;
 		StartIndex = mt.StartIndex;
-		pVcetor = new TVector<ValType>[Size];
+		pVector = new TVector<ValType>[Size];
 		for (int i = 0; i < Size; i++)
 			pVector[i] = mt.pVector[i];
 	}
