@@ -271,11 +271,11 @@ template <class ValType> // сравнение На равенство
 bool TMatrix<ValType>::operator==(const TMatrix<ValType> &mt) const
 {
 	bool t = true;
-	if (Size != v.Size)
+	if (Size != mt.Size)
 		t = false;
 	else
 		for (int i = 0; i < Size; i++)
-			if (pVector[i] != v.pVector[i])
+			if (pVector[i] != mt.pVector[i])
 			{
 				t = false;
 				break;
