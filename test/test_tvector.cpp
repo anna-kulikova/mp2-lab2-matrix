@@ -147,46 +147,60 @@ TEST(TVector, vectors_with_different_size_are_not_equal)
 
 TEST(TVector, can_add_scalar_to_vector)
 {
-	TVector<float> v(5);
-	// FIX: fill
+	TVector<int> v(2);
+	v[0] = 2;
+	v[1] = 5;
 	ASSERT_NO_THROW(v + 5);
 }
 
 TEST(TVector, can_subtract_scalar_from_vector)
 {
-	TVector<float> v(5);
-	// FIX: fill
+	TVector<int> v(2);
+	v[0] = 2;
+	v[1] = 5;
 	ASSERT_NO_THROW(v - 5);
 }
 
 TEST(TVector, can_multiply_scalar_by_vector)
 {
-	TVector<float> v(5);
-	// FIX: fill
+	TVector<int> v(2);
+	v[0] = 2;
+	v[1] = 5;
 	ASSERT_NO_THROW(v * 5);
 }
 
 TEST(TVector, can_add_vectors_with_equal_size)
 {
-	TVector<float> v(5);
-	TVector<float> b(5);
-	// FIX: fill
+	TVector<int> v(2);
+	v[0] = 2;
+	v[1] = 5;
+	TVector<int> b(2);
+	b[0] = 5;
+	b[1] = 9;
 	ASSERT_NO_THROW(v + b);
 }
 
 TEST(TVector, cant_add_vectors_with_not_equal_size)
 {
-	TVector<float> v(5);
-	TVector<float> b(8);
-	// FIX: fill
+	TVector<int> v(2);
+	v[0] = 2;
+	v[1] = 5;
+	TVector<int> b(4);
+	b[0] = 5;
+	b[1] = 9;
+	b[2] = 4;
+	b[3] = 6;
 	ASSERT_ANY_THROW(v + b);
 }
 
 TEST(TVector, can_subtract_vectors_with_equal_size)
 {
-	TVector<float> v(5);
-	TVector<float> b(5);
-	// FIX: fill
+	TVector<int> v(2);
+	v[0] = 2;
+	v[1] = 5;
+	TVector<int> b(2);
+	b[0] = 5;
+	b[1] = 9;
 	ASSERT_NO_THROW(v - b);
 }
 
@@ -212,5 +226,136 @@ TEST(TVector, cant_multiply_vectors_with_not_equal_size)
 	TVector<float> b(8);
 	// FIX: fill
 	ASSERT_ANY_THROW(v * b);
+}
+
+TEST(TVector, throws_when_create_vector_with_start_index_equal_to_size)
+{
+	ASSERT_ANY_THROW(TVector<int> v(2, 2));
+}
+
+TEST(TVector, throws_when_create_vector_with_startindex_bigger_than_size)
+{
+	ASSERT_ANY_THROW(TVector<int> v(2, 3));
+}
+
+TEST(TVector, throws_when_set_element_with_index_smaller_than_start_index)
+{
+	TVector<int> v(6, 4);
+	ASSERT_ANY_THROW(v[3] = 1);
+}
+
+TEST(TVector, assign_operator_change_start_index)
+{
+	TVector<int> v(3, 1);
+	for (int i = 0; i < v.GetStartIndex(); i++)
+		v[i] = i;
+	v[2] = 0;
+	TVector<int> b(3, 2);
+	for (int i = b.GetStartIndex(); i < b.GetSize(); i++)
+	b[i] = i;
+	int t = v.GetStartIndex();
+	v = b;
+	EXPECT_NE(t, v.GetStartIndex());
+}
+
+TEST(TVector, assign_operator_change_vector)
+{
+	TVector<int> v(4);
+	for (int i = 0; i < v.GetSize(); i++)
+		v[i] = i;
+	v[2] = 0;
+	TVector<int> b(8);
+	for (int i = 0; i < b.GetSize(); i++)
+		b[i] = i;
+	b[2] = 0;
+	TVector<int> t(v);
+	v = b;
+	EXPECT_NE(t, v);
+}
+
+TEST(TVector, can_add_scalar_to_vector_EXP_EQ)
+{
+	TVector<int> v(4);
+	for (int i = 0; i < v.GetSize(); i++)
+		v[i] = i;
+	TVector<int> b(v);
+	for (int i = 0; i < v.GetSize(); i++)
+		v[i] += 2;
+	EXPECT_EQ(v, b + 2);
+}
+
+TEST(TVector, can_subtract_scalar_from_vector_EXP_EQ)
+{
+	TVector<int> v(4);
+	for (int i = 0; i < v.GetSize(); i++)
+		v[i] = i;
+	TVector<int> b(v);
+	for (int i = 0; i < v.GetSize(); i++)
+		v[i] -= 2;
+	EXPECT_EQ(v, b - 2);
+}
+
+TEST(TVector, can_multiply_scalar_by_vector_EXP_EQ)
+{
+	TVector<int> v(4);
+	for (int i = 0; i < v.GetSize(); i++)
+		v[i] = i;
+	TVector<int> b(v);
+	for (int i = 0; i < v.GetSize(); i++)
+		v[i] *= 2;
+	EXPECT_EQ(v, b * 2);
+}
+
+TEST(TVector, can_add_vectors_with_equal_size_EXP_EQ)
+{
+	TVector<int> v(4);
+	for (int i = 0; i < v.GetSize(); i++)
+		v[i] = 0;
+	v[2] = 5;
+	TVector<int> b(4);
+	for (int i = 0; i < b.GetSize(); i++)
+		b[i] = 0;
+	b[1] = 3;
+	TVector<int> res(5);
+	for (int i = 0; i < res.GetSize(); i++)
+		res[i] = 0;
+	res[2] = 5;
+	res[1] = 3;
+	EXPECT_EQ(res, v + b);
+}
+
+TEST(TVector, can_substract_vectors_with_equal_size_EXP_EQ)
+{
+	TVector<int> v(4);
+	for (int i = 0; i < v.GetSize(); i++)
+		v[i] = 0;
+	v[2] = 5;
+	TVector<int> b(4);
+	for (int i = 0; i < b.GetSize(); i++)
+		b[i] = 0;
+	b[1] = 3;
+	TVector<int> res(5);
+	for (int i = 0; i < res.GetSize(); i++)
+		res[i] = 0;
+	res[2] = 5;
+	res[1] = -3;
+	EXPECT_EQ(res, v - b);
+}
+
+TEST(TVector, can_multiply_vectors_with_equal_size_EXP_EQ)
+{
+	TVector<int> v(4);
+	for (int i = 0; i < v.GetSize(); i++)
+		v[i] = 1;
+	v[2] = 5;
+	TVector<int> b(4);
+	for (int i = 0; i < b.GetSize(); i++)
+		b[i] = 1;
+	b[2] = 3;
+	TVector<int> res(5);
+	for (int i = 0; i < res.GetSize(); i++)
+		res[i] = 1;
+	res[2] = 15;
+	EXPECT_EQ(res, v * b);
 }
 

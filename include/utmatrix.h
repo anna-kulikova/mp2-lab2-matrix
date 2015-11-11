@@ -62,18 +62,18 @@ public:
 template <class ValType> //конструктор
 TVector<ValType>::TVector(int s, int si)
 {
-	Size = s;
-	StartIndex = si;
 	if (s <= 0)
 		throw
 		exception("Size must be positive");
 	if (s > MAX_VECTOR_SIZE)
 		throw
 		exception("Size can't be bigger than MAX_VECTOR_SIZE");
-	if (si < 0)
+	if ((si < 0) || (si >= s))
 		throw
-		exception("Start index can't be negative");
-	pVector = new ValType[s];
+		exception("Out of range");
+	Size = s-si;
+	StartIndex = si;
+	pVector = new ValType[Size];
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> //конструктор копирования
@@ -252,7 +252,7 @@ template <class ValType> //конструктор
 TMatrix<ValType>::TMatrix(int s): TVector<TVector<ValType> >((s <= MAX_MATRIX_SIZE) ? s : -1, 0)
 {
 	for (int i = StartIndex; i < s; i++)
-		pVector[i] = TVector<ValType>(s-i, i);
+		pVector[i] = TVector<ValType>(s, i);
 } /*-------------------------------------------------------------------------*/
 
 template <class ValType> // конструктор копирования
