@@ -159,3 +159,54 @@ TEST(TMatrix, cant_subtract_matrixes_with_not_equal_size)
 	ASSERT_ANY_THROW(m - b);
 }
 
+TEST(TMatrix, assign_operator_change_matrix)
+{
+	TMatrix<int> m(4);
+	for (int i = 0; i < m.GetSize(); i++)
+		for (int j = i; j < m.GetSize(); j++)
+		     {
+		       m[i][j] = 2;
+		     }
+	TMatrix<int> b(5);
+	for (int i = 0; i < b.GetSize(); i++)
+	   for (int j = i; j < b.GetSize(); j++)
+		  {
+			   b[i][j] = 3;
+          }
+	TMatrix<int> res(m);
+	m = b;
+	EXPECT_NE(res, b);
+}
+TEST(TMatrix, can_add_matrices_with_equal_size_EXP_EQ)
+{
+	TMatrix<int> m(2);
+	m[0][0] = 1;
+	m[0][1] = 4;
+	m[1][1] = 3;
+	TMatrix<int> b(2);
+	b[0][0] = 0;
+	b[0][1] = -2;
+	b[1][1] = 1;
+	TMatrix<int> res(2);
+	res[0][0] = 1;
+	res[0][1] = 2;
+	res[1][1] = 4;
+	EXPECT_EQ(res, m + b);
+}
+
+TEST(TMatrix, can_substract_matrices_with_equal_size_EXP_EQ)
+{
+	TMatrix<int> m(2);
+	m[0][0] = 1;
+	m[0][1] = 4;
+	m[1][1] = 3;
+	TMatrix<int> b(2);
+	b[0][0] = 0;
+	b[0][1] = -2;
+	b[1][1] = 1;
+	TMatrix<int> res(2);
+	res[0][0] = 1;
+	res[0][1] = 6;
+	res[1][1] = 2;
+	EXPECT_EQ(res, m - b);
+}
